@@ -1,0 +1,41 @@
+<?php
+
+/**
+ * Implements hook_composer_json_alter().
+ *
+ * This hook filters out dependencies loaded by the skeleton project's
+ * composer.json files and its dependencies.
+ *
+ * @param $json
+ */
+function skeletonsupport_composer_json_alter(&$json) {
+  $file = DRUPAL_ROOT .'/../composer.json';
+  if (file_exists($file)) {
+    $var = file_get_contents($file);
+    $root_package = drupal_json_decode($var);
+    foreach (array_keys($json['autoload']) as $key) {
+      if (isset($root_package['autoload'][$key])) {
+        $json['autoload'][$key] = array_diff($json['autoload'][$key], $root_package['autoload'][$key]);
+      }
+    }
+    $file = DRUPAL_ROOT .'/../vendor/composer/installed.json';
+    if (file_exists($file)) {
+      $var = file_get_contents($file);
+      $installed = drupal_json_decode($var);
+      foreach ($installed as $installed_package) {
+        foreach (array('require', 'require-dev') as $key) {
+          if (isset($json[$key][$installed_package['name']])) {
+            unset($json[$key][$installed_package['name']]);
+          }
+        }
+        foreach (array_keys($json['autoload']) as $key) {
+          if (isset($installed_package['autoload'][$key])) {
+            $json['autoload'][$key] = array_diff_key($json['autoload'][$key], $installed_package['autoload'][$key]);
+          }
+        }
+      }
+    }
+    $json['autoload'] = array_filter($json['autoload']);
+    $json = array_filter($json);
+  }
+}
