@@ -8,7 +8,7 @@
  *
  * @param $json
  */
-function skeletonsupport_composer_json_alter(&$json) {
+function composerplatformsupport_composer_json_alter(&$json) {
   $file = DRUPAL_ROOT .'/../composer.json';
   if (file_exists($file)) {
     $var = file_get_contents($file);
