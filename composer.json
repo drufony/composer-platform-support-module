@@ -1,0 +1,18 @@
+{
+    "name": "drufony/composer-platform-support-module",
+    "description": "Drupal 7 module allows Composer Manager module to run on a Drupal 7 Composer platform.",
+    "license": "GPL-2.0+",
+    "type": "drupal-module",
+    "authors": [
+        {
+            "name": "Benjamin Doherty",
+            "email": "bjd@bangpound.org"
+        }
+    ],
+    "require": {},
+    "extra": {
+        "branch-alias": {
+            "dev-master": "7.0.x-dev"
+        }
+    }
+}
