@@ -7,5 +7,10 @@ whose dependencies are required by the platform's `composer.json` are filtered o
 dependencies will still appear in the Composer Manager administrative interface but they
 are not in the site's `composer.json` file.
 
+Extras
+------
+
+* Rewrite URL for AJAX statistics front controller to be in web root.
+
 [Composer Manager]: https://www.drupal.org/project/composer_manager
 [Drupal Composer]: https://github.com/drufony/drupal-skeleton

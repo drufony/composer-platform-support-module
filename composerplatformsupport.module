@@ -53,12 +53,14 @@ function composerplatformsupport_composer_json_alter(&$json) {
  * Implements hook_js_alter().
  */
 function composerplatformsupport_js_alter(&$javascript) {
-  if (module_exists('statistics') && variable_get('statistics_count_content_views', 0) && variable_get('statistics_count_content_views_ajax', 0)) {
-    if (isset($javascript['settings'])) {
-      foreach ($javascript['settings']['data'] as &$js) {
-        if (isset($js['statistics'])) {
-          $js['statistics']['url'] = url('statistics.php');
-        }
+  if (module_exists('statistics') &&
+    variable_get('statistics_count_content_views', 0) &&
+    variable_get('statistics_count_content_views_ajax', 0) &&
+    isset($javascript['settings'])) {
+    foreach ($javascript['settings']['data'] as &$js) {
+      if (isset($js['statistics'])
+        && $js['statistics']['url'] === url(drupal_get_path('module', 'statistics') . '/statistics.php')) {
+        $js['statistics']['url'] = url('statistics.php');
       }
     }
   }
