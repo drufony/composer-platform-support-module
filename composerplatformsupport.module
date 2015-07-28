@@ -9,44 +9,25 @@
  * @param $json
  */
 function composerplatformsupport_composer_json_alter(&$json) {
-  $file = DRUPAL_ROOT .'/../vendor/composer/installed.json';
-  if (file_exists($file)) {
-    $var = file_get_contents($file);
-    $installed = drupal_json_decode($var);
 
-    // These are merged in composer_manager_build_json, except we don't need
-    // to filter repositories.
-    $to_diff = array(
-      'require',
-      'require-dev',
-      'conflict',
-      'replace',
-      'provide',
-      'suggest',
-    );
-
-    foreach ($installed as $installed_package) {
-
+  // These are merged in composer_manager_build_json, except we don't need
+  // to filter repositories.
+  foreach (array('require', 'require-dev', 'conflict', 'replace', 'provide', 'suggest') as $key) {
+    foreach (\Composed\package_configs($key) as $config) {
       // Remove already-installed packages from the JSON.
-      foreach ($to_diff as $key) {
-        if (isset($json[$key][$installed_package['name']])) {
-          unset($json[$key][$installed_package['name']]);
-        }
-      }
-
-      // Remove autoload configurations that are part of the skeleton project's
-      // autoloader.
-      foreach (array_keys($json['autoload']) as $key) {
-        if (isset($installed_package['autoload'][$key])) {
-          $json['autoload'][$key] = array_diff_key($json['autoload'][$key], $installed_package['autoload'][$key]);
-        }
-      }
+      $json[$key] = array_diff_assoc((array) $json[$key], $config);
     }
-
-    // Remove empty autoload configurations.
-    $json['autoload'] = array_filter($json['autoload']);
-    $json = array_filter($json);
   }
+
+  foreach (\Composed\package_configs('autoload') as $config) {
+    foreach ($config as $key => $value) {
+      $json['autoload'][$key] = array_diff_key((array) $json['autoload'][$key], $value);
+    }
+  }
+
+  // Remove empty autoload configurations.
+  $json['autoload'] = array_filter($json['autoload']);
+  $json = array_filter($json);
 }
 
 /**
