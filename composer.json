@@ -9,7 +9,9 @@
             "email": "bjd@bangpound.org"
         }
     ],
-    "require": {},
+    "require": {
+        "joshdifabio/composed": "~1.0@dev"
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "7.0.x-dev"
