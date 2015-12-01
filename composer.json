@@ -9,8 +9,8 @@
             "email": "bjd@bangpound.org"
         }
     ],
-    "require": {
-        "joshdifabio/composed": "~1.0@dev"
+    "suggest": {
+        "joshdifabio/composed": "Required for use with Composer Manager module."
     },
     "extra": {
         "branch-alias": {

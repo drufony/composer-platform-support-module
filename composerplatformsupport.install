@@ -1,0 +1,22 @@
+<?php
+
+/**
+ * Implement hook_requirements().
+ *
+ * @param $phase
+ * @return array
+ */
+function composerplatformsupport_requirements($phase) {
+  $requirements = array();
+
+  if (!function_exists('Composed\package_configs') && module_exists('composer_manager')) {
+    $requirements[] = array(
+      'title' => t('joshdifabio/composed'),
+      'value' => t('Not installed'),
+      'description' => t('Composed cannot be found.'),
+      'severity' => REQUIREMENT_ERROR,
+    );
+  }
+
+  return $requirements;
+}
